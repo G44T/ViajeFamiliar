@@ -1,0 +1,155 @@
+.wrap { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.addCard {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.addForm {
+  display: flex;
+  gap: 10px;
+}
+
+.inputWrap {
+  position: relative;
+  flex: 1;
+}
+.icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink3);
+  pointer-events: none;
+}
+.inputWrap input {
+  width: 100%;
+  padding: 10px 12px 10px 38px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  background: var(--sand);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.inputWrap input:focus {
+  border-color: var(--terra);
+  box-shadow: 0 0 0 3px rgba(200,80,42,0.1);
+  background: white;
+}
+
+.btnAdd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: var(--terra);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.btnAdd:hover:not(:disabled) { opacity: 0.88; }
+.btnAdd:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.travelersList { display: flex; flex-direction: column; gap: 10px; }
+
+.travelerCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  gap: 12px;
+  transition: box-shadow 0.15s;
+}
+.travelerCard:hover { box-shadow: var(--shadow-sm); }
+.travelerCard:hover .removeBtn { opacity: 1; }
+
+.travelerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.meta {
+  font-size: 0.75rem;
+  color: var(--ink3);
+}
+
+.travelerRight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.paidAmount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.paidLabel { font-size: 0.68rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.05em; }
+.paidValue { font-size: 0.92rem; font-weight: 700; font-family: 'Syne', sans-serif; }
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: var(--ink3);
+  padding: 6px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: all 0.12s;
+}
+.removeBtn:hover { color: var(--terra); background: var(--terra-light); opacity: 1 !important; }
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 3rem;
+  text-align: center;
+  color: var(--ink3);
+  font-size: 1.5rem;
+}
+.empty p { font-size: 0.88rem; }

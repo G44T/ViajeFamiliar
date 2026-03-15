@@ -1,0 +1,140 @@
+import { useState } from 'react';
+import { Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { CATEGORIES, fmt, getTravelerById } from '../utils/calculations';
+import styles from './ExpenseList.module.css';
+
+function groupByDate(expenses) {
+  const groups = {};
+  expenses.forEach(e => {
+    const d = e.date || 'Sin fecha';
+    if (!groups[d]) groups[d] = [];
+    groups[d].push(e);
+  });
+  return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
+}
+
+function formatDate(dateStr) {
+  if (!dateStr || dateStr === 'Sin fecha') return 'Sin fecha';
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+export default function ExpenseList({ expenses, travelers, currency, onRemove }) {
+  const [collapsed, setCollapsed] = useState({});
+
+  if (expenses.length === 0) {
+    return (
+      <div className={styles.empty}>
+        <div className={styles.emptyIcon}>✈️</div>
+        <h3>¡Todo listo para el viaje!</h3>
+        <p>Agrega el primer gasto usando el botón de abajo.</p>
+      </div>
+    );
+  }
+
+  const groups = groupByDate(expenses);
+
+  const toggleGroup = (date) => {
+    setCollapsed(p => ({ ...p, [date]: !p[date] }));
+  };
+
+  return (
+    <div className={styles.list}>
+      {groups.map(([date, items]) => {
+        const dayTotal = items.reduce((s, e) => s + e.amount, 0);
+        const isCollapsed = collapsed[date];
+        return (
+          <div key={date} className={styles.group}>
+            <button className={styles.groupHeader} onClick={() => toggleGroup(date)}>
+              <div>
+                <span className={styles.groupDate}>{formatDate(date)}</span>
+                <span className={styles.groupCount}>{items.length} gasto{items.length !== 1 ? 's' : ''}</span>
+              </div>
+              <div className={styles.groupRight}>
+                <span className={styles.groupTotal}>{fmt(dayTotal, currency)}</span>
+                {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+              </div>
+            </button>
+
+            {!isCollapsed && items.map((exp) => (
+              <ExpenseItem
+                key={exp.id}
+                exp={exp}
+                travelers={travelers}
+                currency={currency}
+                onRemove={onRemove}
+              />
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ExpenseItem({ exp, travelers, currency, onRemove }) {
+  const cat = CATEGORIES.find(c => c.id === exp.category) || CATEGORIES[CATEGORIES.length - 1];
+  const payer = getTravelerById(travelers, exp.paidBy);
+  const perPerson = exp.splitAmong?.length ? exp.amount / exp.splitAmong.length : exp.amount;
+
+  return (
+    <div className={`${styles.item} animate-fade`}>
+      <div className={styles.itemLeft}>
+        <div className={styles.catBadge}>{cat.emoji}</div>
+        <div className={styles.itemInfo}>
+          <div className={styles.itemDesc}>{exp.desc}</div>
+          <div className={styles.itemMeta}>
+            {payer && (
+              <div
+                className={styles.payerTag}
+                style={{ background: payer.color + '22', color: payer.color }}
+              >
+                <div
+                  className={styles.payerDot}
+                  style={{ background: payer.color }}
+                />
+                {payer.name}
+              </div>
+            )}
+            <span className={styles.catTag}>{cat.label}</span>
+            {exp.note && <span className={styles.noteTag}>📎 {exp.note}</span>}
+          </div>
+          {exp.splitAmong && exp.splitAmong.length > 0 && (
+            <div className={styles.splitInfo}>
+              <span>{fmt(perPerson, currency)}/persona</span>
+              <span className={styles.splitDot}>·</span>
+              <div className={styles.avatarRow}>
+                {exp.splitAmong.slice(0, 5).map(pid => {
+                  const t = getTravelerById(travelers, pid);
+                  return t ? (
+                    <div
+                      key={pid}
+                      className={styles.miniAvatar}
+                      style={{ background: t.color }}
+                      title={t.name}
+                    >
+                      {t.avatar}
+                    </div>
+                  ) : null;
+                })}
+                {exp.splitAmong.length > 5 && (
+                  <div className={styles.miniAvatarMore}>+{exp.splitAmong.length - 5}</div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className={styles.itemRight}>
+        <span className={styles.amount}>{fmt(exp.amount, currency)}</span>
+        <button
+          className={styles.deleteBtn}
+          onClick={() => window.confirm('¿Eliminar este gasto?') && onRemove(exp.id)}
+          title="Eliminar"
+        >
+          <Trash2 size={14} />
+        </button>
+      </div>
+    </div>
+  );
+}

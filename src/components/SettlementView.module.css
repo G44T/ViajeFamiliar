@@ -1,0 +1,186 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--ink3);
+}
+.emptyIcon { font-size: 3rem; margin-bottom: 1rem; }
+.empty h3 { font-size: 1.1rem; color: var(--ink2); margin-bottom: 0.5rem; }
+.empty p { font-size: 0.88rem; }
+
+.wrap { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.bannerStat {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bannerStat:first-child { border-right: 1px solid rgba(255,255,255,0.08); }
+.bannerLabel { font-size: 0.72rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.bannerValue { font-size: 1.3rem; font-weight: 800; color: white; letter-spacing: -0.02em; font-family: 'Syne', sans-serif; }
+
+.section { display: flex; flex-direction: column; gap: 12px; }
+.sectionTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink2);
+  letter-spacing: -0.01em;
+}
+
+.settlements { display: flex; flex-direction: column; gap: 10px; }
+
+.settlementCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  gap: 12px;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.person:last-child { justify-content: flex-end; flex-direction: row-reverse; }
+.person:last-child > div:last-child { text-align: right; }
+
+.personAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.personName { font-size: 0.92rem; font-weight: 600; }
+.personRole { font-size: 0.72rem; color: var(--ink3); margin-top: 2px; }
+
+.arrowWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.arrowAmount {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--terra);
+  white-space: nowrap;
+  font-family: 'Syne', sans-serif;
+}
+.arrow { color: var(--terra); }
+
+.allGood {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 2.5rem;
+  background: var(--sage-light);
+  border-radius: var(--radius);
+  border: 1px solid rgba(58,122,82,0.2);
+  text-align: center;
+  color: var(--sage);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.checkIcon { color: var(--sage); }
+
+.personsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.personCard {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.personCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.bigAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+.personCardName { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+.balanceBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.positive { background: var(--sage-light); color: var(--sage); }
+.negative { background: var(--terra-light); color: var(--terra); }
+.neutral { background: var(--sand2); color: var(--ink3); }
+
+.personStats { display: flex; flex-direction: column; gap: 6px; }
+.stat { display: flex; justify-content: space-between; align-items: center; }
+.statLabel { font-size: 0.75rem; color: var(--ink3); }
+.statValue { font-size: 0.82rem; font-weight: 600; font-family: 'Syne', sans-serif; }
+
+.catList { display: flex; flex-direction: column; gap: 10px; }
+.catRow {
+  display: grid;
+  grid-template-columns: 140px 1fr 100px 40px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.catInfo { display: flex; align-items: center; gap: 8px; }
+.catEmoji { font-size: 1.1rem; }
+.catName { font-size: 0.82rem; font-weight: 500; color: var(--ink2); }
+.catBarWrap { height: 6px; background: var(--sand2); border-radius: 99px; overflow: hidden; }
+.catBar {
+  height: 100%;
+  background: var(--terra);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+  min-width: 4px;
+}
+.catAmount { font-size: 0.82rem; font-weight: 700; text-align: right; font-family: 'Syne', sans-serif; }
+.catPct { font-size: 0.72rem; color: var(--ink3); text-align: right; }
+
+@media (max-width: 480px) {
+  .catRow { grid-template-columns: 110px 1fr 80px 36px; }
+  .personsGrid { grid-template-columns: 1fr 1fr; }
+}
