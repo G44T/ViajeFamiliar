@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Trips — anyone with the ID can read/write (share-by-link model)
+    match /trips/{tripId} {
+      allow read, write: if true;
+
+      match /travelers/{travelerId} {
+        allow read, write: if true;
+      }
+
+      match /expenses/{expenseId} {
+        allow read, write: if true;
+      }
+    }
+  }
+}

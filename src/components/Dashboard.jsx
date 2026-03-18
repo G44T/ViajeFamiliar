@@ -122,7 +122,7 @@ export default function Dashboard({ state, store, tripId }) {
 
       {/* Content */}
       <main className={styles.main}>
-        {tab === 'expenses'   && <ExpenseList   expenses={expenses} travelers={travelers} currency={trip.currency} onRemove={store.removeExpense} />}
+        {tab === 'expenses'   && <ExpenseList   expenses={expenses} travelers={travelers} currency={trip.currency} onRemove={store.removeExpense} onUpdate={store.updateExpense} />}
         {tab === 'settlement' && <SettlementView expenses={expenses} travelers={travelers} currency={trip.currency} />}
         {tab === 'travelers'  && <TravelersPanel travelers={travelers} expenses={expenses} currency={trip.currency} onAdd={store.addTraveler} onRemove={store.removeTraveler} />}
       </main>

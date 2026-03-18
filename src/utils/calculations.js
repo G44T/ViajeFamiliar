@@ -1,32 +1,44 @@
 /**
- * Calculate who owes whom to settle all debts optimally.
- * Returns minimal number of transactions needed.
+ * calculateSettlement — algoritmo greedy para liquidar deudas con el mínimo de transacciones.
+ *
+ * Soporta dos modos de división:
+ *  - splitMode: 'equal'  → splitAmong: [id, id, ...]  (partes iguales)
+ *  - splitMode: 'custom' → customShares: { id: monto, id: monto, ... } (montos individuales)
  */
 export function calculateSettlement(travelers, expenses) {
   if (!travelers.length || !expenses.length) return { balances: {}, settlements: [] };
 
-  // Net balance per person (positive = owed money, negative = owes money)
   const balances = {};
   travelers.forEach(t => { balances[t.id] = 0; });
 
   expenses.forEach(exp => {
-    const { paidBy, amount, splitAmong } = exp;
-    if (!splitAmong || !splitAmong.length) return;
-    const share = amount / splitAmong.length;
+    const { paidBy, amount, splitMode, splitAmong, customShares } = exp;
 
-    // Payer gets credit
+    // Payer gets full credit
     if (balances[paidBy] !== undefined) {
       balances[paidBy] += amount;
     }
-    // Each participant owes their share
-    splitAmong.forEach(pid => {
-      if (balances[pid] !== undefined) {
-        balances[pid] -= share;
-      }
-    });
+
+    if (splitMode === 'custom' && customShares) {
+      // Each person owes exactly their custom share
+      Object.entries(customShares).forEach(([pid, share]) => {
+        if (balances[pid] !== undefined) {
+          balances[pid] -= Number(share);
+        }
+      });
+    } else {
+      // Equal split
+      if (!splitAmong || !splitAmong.length) return;
+      const share = amount / splitAmong.length;
+      splitAmong.forEach(pid => {
+        if (balances[pid] !== undefined) {
+          balances[pid] -= share;
+        }
+      });
+    }
   });
 
-  // Greedy settlement algorithm
+  // Greedy settlement
   const settlements = [];
   const debtors = Object.entries(balances)
     .filter(([, v]) => v < -0.01)
@@ -42,13 +54,7 @@ export function calculateSettlement(travelers, expenses) {
     const debtor = debtors[d];
     const creditor = creditors[c];
     const amount = Math.min(debtor.amount, creditor.amount);
-
-    settlements.push({
-      from: debtor.id,
-      to: creditor.id,
-      amount: Math.round(amount * 100) / 100,
-    });
-
+    settlements.push({ from: debtor.id, to: creditor.id, amount: Math.round(amount * 100) / 100 });
     debtor.amount -= amount;
     creditor.amount -= amount;
     if (debtor.amount < 0.01) d++;
@@ -68,15 +74,19 @@ export function fmt(amount, currency = 'PEN') {
   return `${sym} ${Math.abs(amount).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+export function fmtNum(amount) {
+  return Math.abs(amount).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 export const CATEGORIES = [
-  { id: 'transport', label: 'Transporte', emoji: '✈️' },
-  { id: 'lodging', label: 'Hospedaje', emoji: '🏨' },
-  { id: 'food', label: 'Comida', emoji: '🍽️' },
-  { id: 'activities', label: 'Actividades', emoji: '🎡' },
-  { id: 'shopping', label: 'Compras', emoji: '🛍️' },
-  { id: 'health', label: 'Salud', emoji: '💊' },
-  { id: 'fuel', label: 'Gasolina', emoji: '⛽' },
-  { id: 'other', label: 'Otros', emoji: '📦' },
+  { id: 'transport',  label: 'Transporte',   emoji: '✈️' },
+  { id: 'lodging',    label: 'Hospedaje',     emoji: '🏨' },
+  { id: 'food',       label: 'Comida',        emoji: '🍽️' },
+  { id: 'activities', label: 'Actividades',   emoji: '🎡' },
+  { id: 'shopping',   label: 'Compras',       emoji: '🛍️' },
+  { id: 'health',     label: 'Salud',         emoji: '💊' },
+  { id: 'fuel',       label: 'Gasolina',      emoji: '⛽' },
+  { id: 'other',      label: 'Otros',         emoji: '📦' },
 ];
 
 export const CURRENCIES = [

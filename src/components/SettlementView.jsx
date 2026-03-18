@@ -15,8 +15,11 @@ export default function SettlementView({ expenses, travelers, currency }) {
   const travelerStats = travelers.map(t => {
     const paid = expenses.filter(e => e.paidBy === t.id).reduce((s, e) => s + e.amount, 0);
     const owes = expenses.reduce((s, e) => {
-      if (e.splitAmong?.includes(t.id)) return s + e.amount / (e.splitAmong.length || 1);
-      return s;
+      if (!e.splitAmong?.includes(t.id)) return s;
+      if (e.splitMode === 'custom' && e.customShares?.[t.id] != null) {
+        return s + Number(e.customShares[t.id]);
+      }
+      return s + e.amount / (e.splitAmong.length || 1);
     }, 0);
     const balance = balances[t.id] ?? 0;
     return { ...t, paid, owes, balance };
