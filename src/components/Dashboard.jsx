@@ -139,7 +139,7 @@ export default function Dashboard({ state, store, tripId }) {
         <AddExpenseModal
           travelers={travelers}
           currency={trip.currency}
-          onAdd={(exp) => { store.addExpense(exp); setShowAdd(false); }}
+          onSave={(exp) => { store.addExpense(exp); setShowAdd(false); }}
           onClose={() => setShowAdd(false)}
         />
       )}
