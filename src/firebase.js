@@ -1,9 +1,3 @@
-// ============================================================
-//  CONFIGURACIÓN FIREBASE
-//  Reemplaza los valores con los de tu proyecto en Firebase Console
-//  https://console.firebase.google.com → Tu proyecto → Configuración del proyecto
-// ============================================================
-
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 

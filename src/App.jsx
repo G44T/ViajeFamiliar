@@ -1,6 +1,6 @@
 import { useTripStore } from './hooks/useTripStore';
-import SetupScreen from './components/SetupScreen';
-import Dashboard from './components/Dashboard';
+import SetupScreen  from './components/SetupScreen';
+import Dashboard    from './components/Dashboard';
 import LoadingScreen from './components/LoadingScreen';
 import './index.css';
 
@@ -13,8 +13,8 @@ export default function App() {
   if (!state.trip || !tripId) {
     return (
       <SetupScreen
-        onSetup={(tripData, travelerNames) => store.createTrip(tripData, travelerNames)}
-        onJoin={(id) => store.joinTrip(id)}
+        onSetup={(tripData, names) => store.createTrip(tripData, names)}
+        onJoin={id => store.joinTrip(id)}
         error={error}
       />
     );
